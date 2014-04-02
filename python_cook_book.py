@@ -4,6 +4,12 @@ sys.path[0] == 'folder path of py file' # or sys.argv[0]
 record = ('ACME', 50, 123.45, (12, 18, 2012))
 name, *_, (*_, year) = record
 
+import re
+s = '    this is   a     blue  sky    '
+' '.join(re.split(r'\s*',s.strip())[::-1])
+s == 'sky blue a is this'
+
+if any(i > 2 for i in arr):print(1)
 
 from collections import deque
 previous_lines = deque(maxlen=history)
@@ -103,3 +109,30 @@ for i in foo:
         break
 else:
     print("i was never 0")
+
+
+
+#random
+>>> import random
+>>> random.random()                      # Random float x, 0.0 <= x < 1.0
+0.37444887175646646
+
+>>> random.uniform(1, 10)                # Random float x, 1.0 <= x < 10.0
+1.1800146073117523
+
+>>> random.randrange(10)                 # Integer from 0 to 9
+7
+
+>>> random.randrange(0, 101, 2)          # Even integer from 0 to 100
+26
+
+>>> random.choice('abcdefghij')          # Single random element
+'c'
+
+>>> items = [1, 2, 3, 4, 5, 6, 7]
+>>> random.shuffle(items)
+>>> items
+[7, 3, 2, 5, 6, 4, 1]
+
+>>> random.sample([1, 2, 3, 4, 5],  3)   # Three samples without replacement
+[4, 1, 5]
