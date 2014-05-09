@@ -1,5 +1,7 @@
-os.getcwd()
-sys.path[0] == 'folder path of py file' # or sys.argv[0]
+# C:\Users\DELL>python c:\temp\python\1.py
+os.getcwd() # # C:\Users\DELL
+sys.path[0] == 'folder path of py file' # c:\temp\python
+sys.argv[0] # c:\temp\python\1.py
 
 record = ('ACME', 50, 123.45, (12, 18, 2012))
 name, *_, (*_, year) = record
