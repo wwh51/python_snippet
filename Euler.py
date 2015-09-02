@@ -1,6 +1,6 @@
 from __future__ import division
 
-'''test git
+'''test smartgit
 '''
 
 from copy import deepcopy
