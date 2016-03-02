@@ -37,41 +37,47 @@ def send_email(user, pwd, recipient, subject, body):
 out_put_file = 'c:\\temp\\modem.txt'
 tid_array=[]
 try:
-	links_file2 = codecs.open(out_put_file, "r", "utf-8")
-	content = links_file2.readlines()
-	for line in content:
-		line=line.encode("ascii","ignore")
-		g=re.search(r'&tid=([0-9]+)',line)
-		if g:
-			tid_array.append(g.group(1))
-	links_file2.close()
+    links_file2 = codecs.open(out_put_file, "r", "utf-8")
+    content = links_file2.readlines()
+    for line in content:
+        line=line.encode("ascii","ignore")
+        g=re.search(r'&tid=([0-9]+)',line)
+        if g:
+            tid_array.append(g.group(1))            
+    links_file2.close()
 except IOError:
-	print ""	
+    print ""    
+
+mailbody=""
+newline="\r\n"
+newline=newline.encode('utf-8')
 
 response = urllib2.urlopen("http://www.yeeyi.com/bbs/forum.php?mod=forumdisplay&fid=642&filter=typeid&typeid=758")
 soup = BeautifulSoup(response.read(), "html.parser")
 aa3 = soup.find_all("a", class_="s xst")
 links_file2 = codecs.open(out_put_file, "a", "utf-8")
 for alink in aa3:
-	s=alink.contents[0]		
-	if (s.find(u'\u8def\u7531') >= 0) or (s.find(u'\u732b') >= 0) or (s.find(u'\u006d\u006f\u0064\u0065\u006d') >= 0): 
-		tid = alink["href"]
-		g=re.search(r'&tid=([0-9]+)',tid)
-		if g:
-			newtid=g.group(1)
-			if newtid not in tid_array:
-				tid_array.append(newtid)
-				line = "http://www.yeeyi.com/bbs/forum.php?mod=viewthread&tid=" + newtid + " "
-				links_file2.write(line.encode('utf-8'))
-				links_file2.write(s)
-				line = "\r\n"
-				links_file2.write(line.encode('utf-8'))
+  s=alink.contents[0]     
+  if (s.find(u'\u8def\u7531') >= 0) or (s.find(u'\u732b') >= 0) or (s.find(u'\u006d\u006f\u0064\u0065\u006d') >= 0): 
+      tid = alink["href"]
+      g=re.search(r'&tid=([0-9]+)',tid)
+      if g:
+          newtid=g.group(1)
+          if newtid not in tid_array:
+              tid_array.append(newtid)
+              #line = "http://www.yeeyi.com/bbs/forum.php?mod=viewthread&tid=" + newtid + " " + s + "\r\n"
+              line = "".join(["http://www.yeeyi.com/bbs/forum.php?mod=viewthread&tid=" + newtid + " ", s, "\r\n"])
+              line = line.encode('utf-8') #+ s + newline
+              mailbody = mailbody + line
+              links_file2.write(line.decode('utf-8'))
+                
 links_file2.close()
 
+# # consider use important account
+if (mailbody != ""):
+    send_email('from', 'password', 'to', 'modem', mailbody)
 
-mailbody = 'This is a test from python'
-# consider use important account
-send_email('dpmel2014@gmail.com', 'password', 'weihuaw@gmail.com', 'test-py', mailbody)
+
 
 
 # tables = soup.find_all("table")
